@@ -78,6 +78,29 @@ public class PuzzleGrid : MonoBehaviour
         }
     }
 
+    // Return a direction depending on input, or null if nothing is pressed
+    string GetInputDirection()
+    {
+        string dir = null;
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            dir = "up";
+        }
+        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            dir = "left";
+        }
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            dir = "down";
+        }
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            dir = "down";
+        }
+        return dir;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -110,26 +133,28 @@ public class PuzzleGrid : MonoBehaviour
 
                 // TODO: Propogate message to movecounter in UI
             }
-            else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) ||
-                        Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) ||
-                        Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) ||
-                        Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            else
             {
-                // Calculate candle position after movement, null if no movement
-                GridObject[,] newGrid = Candle.CalculateMovement(grid, KeyCode.W);
+                string dir = GetInputDirection();
 
-                // Update Candle Position, if possible based on walls, level limits
-                if (newGrid != null)
+                if (dir != null)
                 {
-                    // Update flame propogation (candles, cobwebs)
-                    // Cobwebs destruction
-                    // Calculate wet/rain tiles affecting candles
-                    // Calculate Puppies
-                    // Win/Loss condition
+                    // Calculate candle position after movement, null if no movement
+                    GridObject[,] newGrid = Candle.CalculateMovement(grid, dir);
 
-                    // Add to history remove excess states if exceeds limit
-                    // Increase move counter
-                    coolDownTimer = CooldownDuration;
+                    // Update Candle Position, if possible based on walls, level limits
+                    if (newGrid != null)
+                    {
+                        // Update flame propogation (candles, cobwebs)
+                        // Cobwebs destruction
+                        // Calculate wet/rain tiles affecting candles
+                        // Calculate Puppies
+                        // Win/Loss condition
+
+                        // Add to history remove excess states if exceeds limit
+                        // Increase move counter
+                        coolDownTimer = CooldownDuration;
+                    }
                 }
             }
         }
