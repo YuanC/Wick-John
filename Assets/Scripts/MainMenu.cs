@@ -6,23 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public Text LeaderboardEntries;
 
     void Start()
     {
         // Load the leaderboard list upon scene load, and append the entries to the UI
 
-        SaveLoad.LoadLeaderboard();
+        //SaveLoad.LoadLeaderboard();
 
-        if (SaveLoad.Leaderboard.Count > 0)
-        {
-            LeaderboardEntries.text = "";
+        //if (SaveLoad.Leaderboard.Count > 0)
+        //{
+        //    LeaderboardEntries.text = "";
 
-            for (int i = 0; i < SaveLoad.Leaderboard.Count; i++)
-            {
-                LeaderboardEntries.text += SaveLoad.Leaderboard[i].name + " " + SaveLoad.Leaderboard[i].time + "\n";
-            }
-        }
+        //    for (int i = 0; i < SaveLoad.Leaderboard.Count; i++)
+        //    {
+        //        LeaderboardEntries.text += SaveLoad.Leaderboard[i].name + " " + SaveLoad.Leaderboard[i].time + "\n";
+        //    }
+        //}
     }
 
     public void ClickQuitButton()
@@ -32,6 +31,6 @@ public class MainMenu : MonoBehaviour
 
     public void ClickBeginButton()
     {
-        SceneManager.LoadScene("Level");
+        SceneManager.LoadScene("Level Select");
     }
 }

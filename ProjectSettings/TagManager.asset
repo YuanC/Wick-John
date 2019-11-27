@@ -4,9 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Key
-  - Door
-  - Exit
+  - Candle
   layers:
   - Default
   - TransparentFX
