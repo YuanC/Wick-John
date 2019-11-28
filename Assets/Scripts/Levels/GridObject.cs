@@ -21,7 +21,6 @@ public class GridObject : MonoBehaviour
         float[] gCoords = new float[2];
         gCoords[0] = ((float)u - x / 2f + 0.5f);
         gCoords[1] = ((float)(y-v-1) - y / 2f + 0.5f);
-        Debug.Log(gCoords[0] + " " + gCoords[1]);
         return gCoords;
     }
 }

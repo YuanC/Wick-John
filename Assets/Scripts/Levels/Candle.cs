@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Candle : GridObject
 {
-    public bool isLit = false;
-
     public Vector3 targetPosition;
+    public float moveSpeed = 1;
+    public GameObject Fire;
 
     // Start is called before the first frame update
     void Start()
@@ -18,12 +18,25 @@ public class Candle : GridObject
     void Update()
     {
         // Show/hide flame
+        Fire.SetActive(GetComponent<Flammable>().isLit);
 
-        // Lerp toward target position
-        transform.position = targetPosition;
+        // Travel toward target position
+        Vector3 diff = targetPosition - transform.position;
+
+        if (diff.magnitude > 0.05)
+        {
+            diff = diff.normalized;
+            transform.position += (diff * moveSpeed * Time.deltaTime);
+        }
+        else
+        {
+            Debug.Log(diff.magnitude);
+            transform.position = targetPosition;
+        }
     }
 
-    // Determines the candles' new positions, if possible
+    // Determines the candles' new positions, if possible.
+    // I'm not too proud of this function...
     public static GridObject[,] CalculateMovement(GridObject[,] grid, string dir)
     {
         bool movementPossible = false;
@@ -45,17 +58,25 @@ public class Candle : GridObject
                         if (gObj != null &&
                             gObj.gameObject.tag == "Candle" &&
                             j > 0 &&
-                            grid[i, j - 1] == null) // Won't break boundaries and is blank tile
+                            newGrid[i, j - 1] == null) // Won't break boundaries and is blank tile
                         {
-                            newGrid[i, j - 1] = gObj;
-                            newGrid[i, j] = null;
+                            
+                            if (gObj.GetComponent<Flammable>().isLit)
+                            {
+                                newGrid[i, j - 1] = gObj;
+                                newGrid[i, j] = null;
 
-                            float[] xz = GridObject.GetGlobalCoordinates(x, y, i, j - 1);
-                            Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
+                                float[] xz = GridObject.GetGlobalCoordinates(x, y, i, j - 1);
+                                Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
 
-                            Candle candle = gObj.GetComponent<Candle>();
-                            candle.targetPosition = newPos;
-                            movementPossible = true;
+                                Candle candle = gObj.GetComponent<Candle>();
+                                candle.targetPosition = newPos;
+                                movementPossible = true;
+                            }
+                            else
+                            {
+                                newGrid[i, j] = grid[i, j];
+                            }
                         }
                         else
                         {
@@ -74,17 +95,24 @@ public class Candle : GridObject
                         if (gObj != null &&
                             gObj.gameObject.tag == "Candle" && 
                             j < y - 1 &&
-                            grid[i, j + 1] == null) // Won't break boundaries and is blank tile
+                            newGrid[i, j + 1] == null) // Won't break boundaries and is blank tile
                         {
-                            newGrid[i, j + 1] = gObj;
-                            newGrid[i, j] = null;
-
-                            float[] xz = GridObject.GetGlobalCoordinates(x, y, i, j + 1);
-                            Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
-
                             Candle candle = gObj.GetComponent<Candle>();
-                            candle.targetPosition = newPos;
-                            movementPossible = true;
+                            if (gObj.GetComponent<Flammable>().isLit)
+                            {
+                                newGrid[i, j + 1] = gObj;
+                                newGrid[i, j] = null;
+
+                                float[] xz = GridObject.GetGlobalCoordinates(x, y, i, j + 1);
+                                Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
+
+                                candle.targetPosition = newPos;
+                                movementPossible = true;
+                            }
+                            else
+                            {
+                                newGrid[i, j] = grid[i, j];
+                            }
                         }
                         else
                         {
@@ -103,17 +131,24 @@ public class Candle : GridObject
                         if (gObj != null &&
                             gObj.gameObject.tag == "Candle" &&
                             i > 0 &&
-                            grid[i - 1, j] == null) // Won't break boundaries and is blank tile
+                            newGrid[i - 1, j] == null) // Won't break boundaries and is blank tile
                         {
-                            newGrid[i - 1, j] = gObj;
-                            newGrid[i, j] = null;
-
-                            float[] xz = GridObject.GetGlobalCoordinates(x, y, i - 1, j);
-                            Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
-
                             Candle candle = gObj.GetComponent<Candle>();
-                            candle.targetPosition = newPos;
-                            movementPossible = true;
+                            if (gObj.GetComponent<Flammable>().isLit)
+                            {
+                                newGrid[i - 1, j] = gObj;
+                                newGrid[i, j] = null;
+
+                                float[] xz = GridObject.GetGlobalCoordinates(x, y, i - 1, j);
+                                Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
+
+                                candle.targetPosition = newPos;
+                                movementPossible = true;
+                            }
+                            else
+                            {
+                                newGrid[i, j] = grid[i, j];
+                            }
                         }
                         else
                         {
@@ -132,17 +167,24 @@ public class Candle : GridObject
                         if (gObj != null &&
                             gObj.gameObject.tag == "Candle" &&
                             i < x - 1 &&
-                            grid[i + 1, j] == null) // Won't break boundaries and is blank tile
+                            newGrid[i + 1, j] == null) // Won't break boundaries and is blank tile
                         {
-                            newGrid[i + 1, j] = gObj;
-                            newGrid[i, j] = null;
-
-                            float[] xz = GridObject.GetGlobalCoordinates(x, y, i + 1, j);
-                            Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
-
                             Candle candle = gObj.GetComponent<Candle>();
-                            candle.targetPosition = newPos;
-                            movementPossible = true;
+                            if (gObj.GetComponent<Flammable>().isLit)
+                            {
+                                newGrid[i + 1, j] = gObj;
+                                newGrid[i, j] = null;
+
+                                float[] xz = GridObject.GetGlobalCoordinates(x, y, i + 1, j);
+                                Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
+
+                                candle.targetPosition = newPos;
+                                movementPossible = true;
+                            }
+                            else
+                            {
+                                newGrid[i, j] = grid[i, j];
+                            }
                         }
                         else
                         {

@@ -14,12 +14,9 @@ public class PuzzleGrid : MonoBehaviour
     public GridObject[,] grid = new GridObject[gWidth, gHeight];  // Grid representation of level
     private List<string[,]> history = new List<string[,]>();  // Only stores the object tags for recreation purposes
 
-    // Adds cooldown between movement actions to make room for animations, etc...
-    private float coolDownTimer = 0.0f;
-    public float CooldownDuration = 0.2f;
-
-    // Maps prfab tags to their prefab objects
-    public Dictionary<string, GameObject> GridObjectMap;
+    // Maps prefab tags to their prefab objects
+    public Dictionary<string, GameObject> GridObjectMap = new Dictionary<string, GameObject>();
+    public List<GameObject> GridObjectPrefabs = new List<GameObject>();
 
     public enum LevelState
     {
@@ -32,6 +29,12 @@ public class PuzzleGrid : MonoBehaviour
     void Start()
     {
         levelState = LevelState.Active;
+
+        // Create a map for all prefabs based on their tag
+        foreach (GameObject obj in GridObjectPrefabs)
+        {
+            GridObjectMap.Add(obj.tag, obj);
+        }
 
         // Add all the grid objects in scene to the grid state
         foreach (GridObject gridObj in GetComponentsInChildren<GridObject>())
@@ -104,58 +107,54 @@ public class PuzzleGrid : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (coolDownTimer > 0)
+        // Crappy but nonetheless working input handling implementation
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            coolDownTimer -= Time.deltaTime;
+            // Exit Level
+            SceneManager.LoadScene("Level Select");
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
+            {
+            // Restarts level
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else if (Input.GetKeyDown(KeyCode.Z))
+        {
+            // Undo
+            if (history.Count > 0)
+            {
+                string[,] prevGrid = history[history.Count - 1];
+                history.RemoveAt(history.Count - 1);
+                // Recreate Grid
+
+
+                // Propogate message to movecounter in UI
+            }
+
         }
         else
         {
-            // Crappy but nonetheless working input handling implementation
+            string dir = GetInputDirection();
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (dir != null)
             {
-                // Exit Level
-                SceneManager.LoadScene("Level Select");
-                coolDownTimer = CooldownDuration;
-            }
-            else if (Input.GetKeyDown(KeyCode.R))
+                // Calculate candle position after movement, null if no movement
+                GridObject[,] newGrid = Candle.CalculateMovement(grid, dir);
+
+                // Update Candle Position, if possible based on walls, level limits
+                if (newGrid != null)
                 {
-                // Restarts level
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                coolDownTimer = CooldownDuration;
-            }
-            else if (Input.GetKeyDown(KeyCode.Z))
-            {
-                // Undo
-                string[,] prevGrid = history[history.Count - 1];
-                history.RemoveAt(history.Count - 1);
-                coolDownTimer = CooldownDuration;
+                    // Update flame propogation (candles, cobwebs)
+                    // Cobwebs destruction
+                    // Calculate wet/rain tiles affecting candles
+                    // Calculate Puppies
+                    // Win/Loss condition
 
-                // TODO: Propogate message to movecounter in UI
-            }
-            else
-            {
-                string dir = GetInputDirection();
-
-                if (dir != null)
-                {
-                    // Calculate candle position after movement, null if no movement
-                    GridObject[,] newGrid = Candle.CalculateMovement(grid, dir);
-
-                    // Update Candle Position, if possible based on walls, level limits
-                    if (newGrid != null)
-                    {
-                        // Update flame propogation (candles, cobwebs)
-                        // Cobwebs destruction
-                        // Calculate wet/rain tiles affecting candles
-                        // Calculate Puppies
-                        // Win/Loss condition
-
-                        // Add to history remove excess states if exceeds limit
-                        // Increase move counter
-
-                        coolDownTimer = CooldownDuration;
-                    }
+                    // Add to history remove excess states if exceeds limit
+                    // Increase move counter
+                    grid = newGrid;
+                    SaveGridToHistory();
                 }
             }
         }
