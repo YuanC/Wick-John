@@ -5,7 +5,9 @@ using UnityEngine;
 public class Flammable : MonoBehaviour
 {
     public bool isLit;
+    public bool isDestructable;
     public GameObject Fire;
+    public GameObject DestructionEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -22,11 +24,17 @@ public class Flammable : MonoBehaviour
         // Show/hide flame
         if (Fire != null)
         {
-            Fire?.SetActive(GetComponent<Flammable>().isLit);
+            Fire.SetActive(GetComponent<Flammable>().isLit);
         }
     }
 
-    public static GridObject[,] PropogateFire(GridObject[,] grid)
+    public void DestroyFlammableObject()
+    {
+        Instantiate(DestructionEffect, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+
+public static GridObject[,] PropogateFire(GridObject[,] grid)
     {
         // Create FireMap
         bool[,] fireGrid = new bool[grid.GetLength(0), grid.GetLength(1)];
@@ -44,9 +52,9 @@ public class Flammable : MonoBehaviour
                     fireGrid[i, j] = grid[i, j].gameObject.GetComponent<Flammable>().isLit;
 
                     // Destroy burning stuff
-                    if (grid[i, j].gameObject.tag == "Wood")
+                    if (grid[i, j].GetComponent<Flammable>().isDestructable)
                     {
-                        Destroy(grid[i, j].gameObject);
+                        grid[i, j].GetComponent<Flammable>().DestroyFlammableObject();
                         grid[i, j] = null;
                     }
                 }
