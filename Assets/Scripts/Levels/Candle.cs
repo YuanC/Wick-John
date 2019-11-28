@@ -17,22 +17,64 @@ public class Candle : GridObject
     // Update is called once per frame
     void Update()
     {
-        // Show/hide flame
-        Fire.SetActive(GetComponent<Flammable>().isLit);
-
         // Travel toward target position
         Vector3 diff = targetPosition - transform.position;
 
-        if (diff.magnitude > 0.05)
+        if (diff.magnitude >= 0.1)
         {
-            diff = diff.normalized;
-            transform.position += (diff * moveSpeed * Time.deltaTime);
+            diff.Normalize();
+            transform.position += (diff * Mathf.Min(moveSpeed * Time.deltaTime, diff.magnitude));
         }
         else
         {
-            Debug.Log(diff.magnitude);
             transform.position = targetPosition;
         }
+    }
+
+    public static bool AllCandlesLit(GridObject[,] grid)
+    {
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                GridObject obj = grid[i, j];
+
+                if (obj != null &&
+                    obj.gameObject.tag == "Candle" &&
+                    obj.GetComponent<Flammable>() &&
+                    !obj.GetComponent<Flammable>().isLit)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static bool AllCandlesOut(GridObject[,] grid)
+    {
+        int width = grid.GetLength(0);
+        int height = grid.GetLength(1);
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                GridObject obj = grid[i, j];
+
+                if (obj != null &&
+                    obj.gameObject.tag == "Candle" &&
+                    obj.GetComponent<Flammable>() &&
+                    obj.GetComponent<Flammable>().isLit)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     // Determines the candles' new positions, if possible.
@@ -55,28 +97,25 @@ public class Candle : GridObject
                     for (int i = 0; i < x; i++)
                     {
                         GridObject gObj = grid[i, j];
+
+                        // Conditions for movement
                         if (gObj != null &&
                             gObj.gameObject.tag == "Candle" &&
                             j > 0 &&
-                            newGrid[i, j - 1] == null) // Won't break boundaries and is blank tile
+                            gObj.GetComponent<Flammable>().isLit &&
+                            Chair.ChairsPushable(newGrid, i, j, dir)) 
                         {
-                            
-                            if (gObj.GetComponent<Flammable>().isLit)
-                            {
-                                newGrid[i, j - 1] = gObj;
-                                newGrid[i, j] = null;
+                            Chair.PushChairs(newGrid, i, j, dir);
 
-                                float[] xz = GridObject.GetGlobalCoordinates(x, y, i, j - 1);
-                                Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
+                            newGrid[i, j - 1] = gObj;
+                            newGrid[i, j] = null;
 
-                                Candle candle = gObj.GetComponent<Candle>();
-                                candle.targetPosition = newPos;
-                                movementPossible = true;
-                            }
-                            else
-                            {
-                                newGrid[i, j] = grid[i, j];
-                            }
+                            float[] xz = GridObject.GetGlobalCoordinates(x, y, i, j - 1);
+                            Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
+
+                            Candle candle = gObj.GetComponent<Candle>();
+                            candle.targetPosition = newPos;
+                            movementPossible = true;
                         }
                         else
                         {
@@ -91,28 +130,25 @@ public class Candle : GridObject
                 {
                     for (int i = 0; i < x; i++)
                     {
+                        // Conditions for movement
                         GridObject gObj = grid[i, j];
                         if (gObj != null &&
                             gObj.gameObject.tag == "Candle" && 
                             j < y - 1 &&
-                            newGrid[i, j + 1] == null) // Won't break boundaries and is blank tile
+                            gObj.GetComponent<Flammable>().isLit &&
+                            Chair.ChairsPushable(newGrid, i, j, dir))
                         {
+                            Chair.PushChairs(newGrid, i, j, dir);
+
+                            newGrid[i, j + 1] = gObj;
+                            newGrid[i, j] = null;
+
+                            float[] xz = GridObject.GetGlobalCoordinates(x, y, i, j + 1);
+                            Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
+
                             Candle candle = gObj.GetComponent<Candle>();
-                            if (gObj.GetComponent<Flammable>().isLit)
-                            {
-                                newGrid[i, j + 1] = gObj;
-                                newGrid[i, j] = null;
-
-                                float[] xz = GridObject.GetGlobalCoordinates(x, y, i, j + 1);
-                                Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
-
-                                candle.targetPosition = newPos;
-                                movementPossible = true;
-                            }
-                            else
-                            {
-                                newGrid[i, j] = grid[i, j];
-                            }
+                            candle.targetPosition = newPos;
+                            movementPossible = true;
                         }
                         else
                         {
@@ -131,24 +167,20 @@ public class Candle : GridObject
                         if (gObj != null &&
                             gObj.gameObject.tag == "Candle" &&
                             i > 0 &&
-                            newGrid[i - 1, j] == null) // Won't break boundaries and is blank tile
+                            gObj.GetComponent<Flammable>().isLit &&
+                            Chair.ChairsPushable(newGrid, i, j, dir)) // Won't break boundaries and is blank tile
                         {
+                            Chair.PushChairs(newGrid, i, j, dir);
+
+                            newGrid[i - 1, j] = gObj;
+                            newGrid[i, j] = null;
+
+                            float[] xz = GridObject.GetGlobalCoordinates(x, y, i - 1, j);
+                            Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
+
                             Candle candle = gObj.GetComponent<Candle>();
-                            if (gObj.GetComponent<Flammable>().isLit)
-                            {
-                                newGrid[i - 1, j] = gObj;
-                                newGrid[i, j] = null;
-
-                                float[] xz = GridObject.GetGlobalCoordinates(x, y, i - 1, j);
-                                Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
-
-                                candle.targetPosition = newPos;
-                                movementPossible = true;
-                            }
-                            else
-                            {
-                                newGrid[i, j] = grid[i, j];
-                            }
+                            candle.targetPosition = newPos;
+                            movementPossible = true;
                         }
                         else
                         {
@@ -167,24 +199,20 @@ public class Candle : GridObject
                         if (gObj != null &&
                             gObj.gameObject.tag == "Candle" &&
                             i < x - 1 &&
-                            newGrid[i + 1, j] == null) // Won't break boundaries and is blank tile
+                            gObj.GetComponent<Flammable>().isLit &&
+                            Chair.ChairsPushable(newGrid, i, j, dir)) // Won't break boundaries and is blank tile
                         {
+                            Chair.PushChairs(newGrid, i, j, dir);
+                           
+                            newGrid[i + 1, j] = gObj;
+                            newGrid[i, j] = null;
+
+                            float[] xz = GridObject.GetGlobalCoordinates(x, y, i + 1, j);
+                            Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
+
                             Candle candle = gObj.GetComponent<Candle>();
-                            if (gObj.GetComponent<Flammable>().isLit)
-                            {
-                                newGrid[i + 1, j] = gObj;
-                                newGrid[i, j] = null;
-
-                                float[] xz = GridObject.GetGlobalCoordinates(x, y, i + 1, j);
-                                Vector3 newPos = new Vector3(xz[0], 0, xz[1]);
-
-                                candle.targetPosition = newPos;
-                                movementPossible = true;
-                            }
-                            else
-                            {
-                                newGrid[i, j] = grid[i, j];
-                            }
+                            candle.targetPosition = newPos;
+                            movementPossible = true;
                         }
                         else
                         {

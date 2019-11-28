@@ -96,7 +96,7 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _WaveIntensity: -1.5
-    - _WaveScrollSpeed: 0.0211
+    - _WaveScrollSpeed: 0.0155
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

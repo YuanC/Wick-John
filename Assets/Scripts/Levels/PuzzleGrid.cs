@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 public class PuzzleGrid : MonoBehaviour
 {
     // Dimensions of the grid
-    private const int gWidth = 20;
-    private const int gHeight = 16;
+    public static int gWidth = 20;
+    public static int gHeight = 16;
 
-    private const int historySize = 200; // Number of steps to save
+    private const int historySize = 1000; // Number of steps to save.
 
     public GridObject[,] grid = new GridObject[gWidth, gHeight];  // Grid representation of level
     private List<string[,]> history = new List<string[,]>();  // Only stores the object tags for recreation purposes
@@ -18,10 +18,13 @@ public class PuzzleGrid : MonoBehaviour
     public Dictionary<string, GameObject> GridObjectMap = new Dictionary<string, GameObject>();
     public List<GameObject> GridObjectPrefabs = new List<GameObject>();
 
+    public LevelMenu levelMenu;
+
     public enum LevelState
     {
         Active = 0,
-        Paused = 1
+        Paused = 1,
+        Done = 2
     }
     public LevelState levelState;
 
@@ -61,8 +64,15 @@ public class PuzzleGrid : MonoBehaviour
             }
         }
         history.Add(newGrid);
+        Flammable.SaveFireGrid(grid);
+
+        if (history.Count > historySize)
+        {
+            history.RemoveRange(historySize, history.Count - historySize);
+        }
+
         Debug.Log("New Grid added: " + history.Count + " / " + historySize);
-        PrintGrid();
+        //PrintGrid();
     }
 
     // Prints the current grid state
@@ -109,12 +119,12 @@ public class PuzzleGrid : MonoBehaviour
     {
         // Crappy but nonetheless working input handling implementation
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (levelState != LevelState.Done && Input.GetKeyDown(KeyCode.Escape))
         {
             // Exit Level
             SceneManager.LoadScene("Level Select");
         }
-        else if (Input.GetKeyDown(KeyCode.R))
+        else if (levelState != LevelState.Done && Input.GetKeyDown(KeyCode.R))
             {
             // Restarts level
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -122,22 +132,54 @@ public class PuzzleGrid : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Z))
         {
             // Undo
-            if (history.Count > 0)
+            if (levelState != LevelState.Done && history.Count > 1)
             {
                 string[,] prevGrid = history[history.Count - 1];
                 history.RemoveAt(history.Count - 1);
-                // Recreate Grid
 
+                bool[,] fireGrid = Flammable.PopFireHistory(); // Saves state of fire for objects
+
+                // Recreate Grid
+                foreach (Transform child in transform)
+                {
+                    Destroy(child.gameObject);
+                }
+
+                for (int i = 0; i < gWidth; i++)
+                { 
+                    for (int j = 0; j < gHeight; j++)
+                    {
+                        grid[i, j] = null;
+
+                        if (prevGrid[i, j] != null)
+                        {
+                            float[] coords = GridObject.GetGlobalCoordinates(gWidth, gHeight, i, j);
+                            Vector3 pos = new Vector3(coords[0], 0, coords[1]);
+                            GameObject prefab = GridObjectMap[prevGrid[i, j]];
+
+                            GameObject obj = Instantiate(prefab, pos, Quaternion.identity, transform);
+                            
+                            if (obj.GetComponent<Flammable>() != null)
+                            {
+                                obj.GetComponent<Flammable>().isLit = fireGrid[i, j];
+                            }
+
+                            grid[i, j] = obj.GetComponent<GridObject>();
+                        }
+                    }
+                }
+                levelState = LevelState.Active;
 
                 // Propogate message to movecounter in UI
+                levelMenu.SendMessage("ModifyMoveCount", -1);
+                levelMenu.SendMessage("SetFailMenu", false);
             }
-
         }
         else
         {
             string dir = GetInputDirection();
 
-            if (dir != null)
+            if (levelState == LevelState.Active && dir != null)
             {
                 // Calculate candle position after movement, null if no movement
                 GridObject[,] newGrid = Candle.CalculateMovement(grid, dir);
@@ -145,16 +187,37 @@ public class PuzzleGrid : MonoBehaviour
                 // Update Candle Position, if possible based on walls, level limits
                 if (newGrid != null)
                 {
-                    // Update flame propogation (candles, cobwebs)
-                    // Cobwebs destruction
-                    // Calculate wet/rain tiles affecting candles
-                    // Calculate Puppies
-                    // Win/Loss condition
+                    SaveGridToHistory();
+                    levelMenu.SendMessage("ModifyMoveCount", 1);
 
-                    // Add to history remove excess states if exceeds limit
+                    // Update flame propogation (candles, cobwebs), destruction
+                    Flammable.PropogateFire(newGrid);
+
+                    // Update wet tile interactions
+                    WaterGrid.ExtinguishFires(newGrid);
+
+                    // Calculate Puppies damage (Loss condition)
+                    if (!Dog.DogsAreSafe(newGrid)){
+                        levelState = LevelState.Paused;
+                        levelMenu.SendMessage("SetFailMenu", true);
+                    }
+
+                    // Calculate Candles (Win/Loss condition)
+
+                    if (Candle.AllCandlesLit(newGrid))
+                    {
+                        levelState = LevelState.Done;
+                        levelMenu.SendMessage("SetCompleteMenu", true);
+                    }
+
+                    if (Candle.AllCandlesOut(newGrid))
+                    {
+                        levelState = LevelState.Paused;
+                        levelMenu.SendMessage("SetFailMenu", true);
+                    }
+
                     // Increase move counter
                     grid = newGrid;
-                    SaveGridToHistory();
                 }
             }
         }

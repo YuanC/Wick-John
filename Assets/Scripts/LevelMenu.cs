@@ -7,21 +7,38 @@ using UnityEngine.SceneManagement;
 public class LevelMenu : MonoBehaviour
 {
     private int moveCount;
-    public Text TimerText;
+    public Text MoveCountText;
     public GameObject CompleteMenu;
+    public GameObject FailMenu;
 
     void Start()
     {
         moveCount = 0;
         CompleteMenu.SetActive(false);
+        FailMenu.SetActive(false);
     }
 
     void Update()
     {
+        MoveCountText.text = "Moves: " + moveCount;
     }
 
-    //TODO: Implement message handler for increasing movecount 
-    //TODO: Implement message handler for showing completemenu panel movecount 
+    // Message handler for increasing movecount 
+    public void ModifyMoveCount(int diff)
+    {
+        moveCount += diff;
+    }
+
+    //TODO: Implement message handler for showing completemenu panel
+    public void SetCompleteMenu(bool showMenu)
+    {
+        CompleteMenu.SetActive(showMenu);
+    }
+
+    public void SetFailMenu(bool showMenu)
+    {
+        FailMenu.SetActive(showMenu);
+    }
 
     public void OnReturnToLevelSelectClick()
     {

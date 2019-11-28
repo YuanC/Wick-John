@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Candle
   - Wall
+  - Chair
+  - Wood
+  - Money
+  - Dog
   layers:
   - Default
   - TransparentFX
