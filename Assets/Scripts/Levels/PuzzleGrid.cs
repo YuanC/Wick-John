@@ -96,7 +96,7 @@ public class PuzzleGrid : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
-            dir = "down";
+            dir = "right";
         }
         return dir;
     }
@@ -153,6 +153,7 @@ public class PuzzleGrid : MonoBehaviour
 
                         // Add to history remove excess states if exceeds limit
                         // Increase move counter
+
                         coolDownTimer = CooldownDuration;
                     }
                 }
