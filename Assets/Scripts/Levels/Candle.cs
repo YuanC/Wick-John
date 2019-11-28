@@ -20,12 +20,13 @@ public class Candle : GridObject
         // Travel toward target position
         Vector3 diff = targetPosition - transform.position;
 
-        if (diff.magnitude >= 0.1)
-        {
-            diff.Normalize();
-            transform.position += (diff * Mathf.Min(moveSpeed * Time.deltaTime, diff.magnitude));
-        }
-        else
+        diff.Normalize();
+        transform.position += (diff * Mathf.Min(moveSpeed * Time.deltaTime, diff.magnitude));
+
+        Vector3 newDiff = targetPosition - transform.position;
+        newDiff.Normalize();
+
+        if (Vector3.Dot(diff, newDiff) < 0)
         {
             transform.position = targetPosition;
         }

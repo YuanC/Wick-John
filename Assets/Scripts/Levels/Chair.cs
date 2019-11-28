@@ -15,28 +15,33 @@ public class Chair : MonoBehaviour
     void Start()
     {
         targetPosition = transform.position;
-        model.transform.Rotate(0, Random.value*360, 0);
+        targetRotation = new Vector3(0, Random.value*360, 0);
         prevRotation = model.transform.eulerAngles;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Travel toward target position
+        // Travel, rotate toward target position
         Vector3 diff = targetPosition - transform.position;
-        
-        if (diff.magnitude > 0.05)
+
+        if (diff.magnitude != 0)
         {
-            Debug.Log(prevRotation);
-            Debug.Log(targetRotation);
-            Debug.Log(1-diff.magnitude);
             model.transform.eulerAngles = Vector3.Slerp(prevRotation, targetRotation, 1 - diff.magnitude);
-            diff = diff.normalized;
-            transform.position += (diff * Mathf.Min(moveSpeed * Time.deltaTime, diff.magnitude));
         }
         else
         {
-            //model.transform.eulerAngles = targetRotation;
+            model.transform.eulerAngles = targetRotation;
+        }
+
+        diff.Normalize();
+        transform.position += (diff * Mathf.Min(moveSpeed * Time.deltaTime, diff.magnitude));
+
+        Vector3 newDiff = targetPosition - transform.position;
+        newDiff.Normalize();
+
+        if (Vector3.Dot(diff, newDiff) < 0)
+        {
             transform.position = targetPosition;
         }
     }
@@ -132,7 +137,7 @@ public class Chair : MonoBehaviour
                 {
                     if (prev != null)
                     {
-                        Chair chair = prev.gameObject.GetComponent<Chair>();
+                        Chair chair = prev.GetComponent<Chair>();
                         float[] coords = GridObject.GetGlobalCoordinates(width, height, x, j);
                         chair.targetPosition = new Vector3(coords[0], 0, coords[1]);
                         chair.prevRotation = chair.targetRotation;
@@ -152,7 +157,7 @@ public class Chair : MonoBehaviour
                 {
                     if (prev != null)
                     {
-                        Chair chair = prev.gameObject.GetComponent<Chair>();
+                        Chair chair = prev.GetComponent<Chair>();
                         float[] coords = GridObject.GetGlobalCoordinates(width, height, x, j);
                         chair.targetPosition = new Vector3(coords[0], 0, coords[1]);
                         chair.prevRotation = chair.targetRotation;
@@ -172,7 +177,7 @@ public class Chair : MonoBehaviour
                 {
                     if (prev != null)
                     {
-                        Chair chair = prev.gameObject.GetComponent<Chair>();
+                        Chair chair = prev.GetComponent<Chair>();
                         float[] coords = GridObject.GetGlobalCoordinates(width, height, i, y);
                         chair.targetPosition = new Vector3(coords[0], 0, coords[1]);
                         chair.prevRotation = chair.targetRotation;
@@ -192,7 +197,7 @@ public class Chair : MonoBehaviour
                 {
                     if (prev != null)
                     {
-                        Chair chair = prev.gameObject.GetComponent<Chair>();
+                        Chair chair = prev.GetComponent<Chair>();
                         float[] coords = GridObject.GetGlobalCoordinates(width, height, i, y);
                         chair.targetPosition = new Vector3(coords[0], 0, coords[1]);
                         chair.prevRotation = chair.targetRotation;
