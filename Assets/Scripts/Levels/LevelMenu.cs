@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class LevelMenu : MonoBehaviour
 {
     private int moveCount;
-    public int LevelNumber = 0;
     public Text MoveCountText;
     public GameObject CompleteMenu;
     public GameObject FailMenu;
@@ -42,7 +41,7 @@ public class LevelMenu : MonoBehaviour
 
     public void OnReturnToLevelSelectClick()
     {
-        SaveLoad.UpdateLevelMoveCount(LevelNumber, moveCount);
+        SaveLoad.UpdateLevelMoveCount(moveCount);
         SceneManager.LoadScene("Level Select");
     }
 

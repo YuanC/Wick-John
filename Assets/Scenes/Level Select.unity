@@ -490,6 +490,8 @@ MonoBehaviour:
   TitleText: {fileID: 770885845}
   MoveCountText: {fileID: 1864331222}
   ChapterNumberText: {fileID: 86752532}
+  LevelList: {fileID: 0}
+  LevelListItem: {fileID: 0}
   InstructionsPanel: {fileID: 0}
 --- !u!1 &299034840
 GameObject:
@@ -1357,7 +1359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8490566, g: 0.5648478, b: 0, a: 1}
+  m_Color: {r: 0.8039216, g: 0.23921569, b: 0.13333334, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

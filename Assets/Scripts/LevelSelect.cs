@@ -8,33 +8,49 @@ public class LevelSelect : MonoBehaviour
 {
     private int selectedLevel;
 
-    private string[] levelData = new string[]
+    private List<Dictionary<string, string>> levelData = new List<Dictionary<string, string>>()
     {
-        "Child is the Father of Man",
-        "Corrupted to the Bone with the Beauty of this Forsaken World",
-        "And Jesus Wept, for there were no more worlds to conquer",
-        "The Answer"
-    };
-
-    private int[] optimalMoveCounts = new int[]
-    {
-        1,
-        2,
-        3,
-        4
+        new Dictionary<string, string>() 
+        {
+            { "title", "Child is the Father of Man" },
+            { "sceneName", "Debug" },
+            { "optMoveCounts", "1" }
+        },
+        new Dictionary<string, string>()
+        {
+            { "title", "Corrupted to the Bone with the Beauty of this Forsaken World" },
+            { "sceneName", "Debug" },
+            { "optMoveCounts", "1" }
+        },
+        new Dictionary<string, string>()
+        {
+            { "title", "And Jesus Wept, for there were no more worlds to conquer" },
+            { "sceneName", "Debug" },
+            { "optMoveCounts", "1" }
+        },
+        new Dictionary<string, string>()
+        {
+            { "title", "The Answer" },
+            { "sceneName", "Debug" },
+            { "optMoveCounts", "1" }
+        }
     };
 
     public Text TitleText;
     public Text MoveCountText;
     public Text ChapterNumberText;
-    public Text InstructionsPanel;
+    public GameObject LevelList;
+    public GameObject LevelListItem;
+    public GameObject InstructionsPanel;
 
     void Start()
     {
         SaveLoad.LoadSave();
 
         // Add level list buttons depending if the previous level was played;
+        // LevelList add whatever
         // Get the furthest unplayed level, else the last level
+        // SelectLevel(latest)
     }
 
     // Update is called once per frame
@@ -47,16 +63,21 @@ public class LevelSelect : MonoBehaviour
     {
         selectedLevel = index;
 
-        // Replace level title, movecounts
+        // Replace level title, chapter number, movecounts
     }
 
     public void SetInstructionsPanel(bool isActive)
     {
-
+        InstructionsPanel.SetActive(isActive);
     }
 
     public void OpenLevel(int level)
     {
         SceneManager.LoadScene("Level_" + level);
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
     }
 }
