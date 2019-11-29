@@ -104,7 +104,7 @@ public class LevelSelect : MonoBehaviour
 
         string currentBestString = SaveLoad.SaveData[selectedLevel] != -1 ? $"{SaveLoad.SaveData[selectedLevel]}" : "N/A";
         MoveCountText.text = $"Current Best: {currentBestString} moves, Optimal: {selectedLevelData["optMoveCount"]} moves";
-        ChapterNumberText.text = $"~ {selectedLevel + 1} ~";
+        ChapterNumberText.text = $"~ Chapter {selectedLevel + 1} ~";
 
         BackButton.interactable = (selectedLevel > 0);
         ForwardButton.interactable = (selectedLevel < unlockedLevelCount - 1);
