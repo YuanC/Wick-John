@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class LevelSelect : MonoBehaviour
 {
     private int selectedLevel;
+    private int unlockedLevelCount;
 
     public Text TitleText;
     public Text MoveCountText;
@@ -14,6 +16,13 @@ public class LevelSelect : MonoBehaviour
     public GameObject LevelList;
     public GameObject LevelListItem;
     public GameObject InstructionsPanel;
+    public Button BackButton;
+    public Button ForwardButton;
+    public Color UnselectedLevelColor;
+    public Color SelectedLevelColor;
+    public int UnselectedLevelTextSize;
+    public int SelectedLevelTextSize;
+
 
     private List<Dictionary<string, string>> levelData = new List<Dictionary<string, string>>()
     {
@@ -45,21 +54,21 @@ public class LevelSelect : MonoBehaviour
 
     void Start()
     {
+        InstructionsPanel.SetActive(false);
         SaveLoad.LoadSave();
 
         List<int> saveData = SaveLoad.SaveData;
-        //Debug.Log(saveData.ToString());
-        for(int i = 0; i< saveData.Count; i++)
-        {
-            Debug.Log(saveData[i]);
-        }
+        //for(int i = 0; i< saveData.Count; i++)
+        //{
+        //    Debug.Log(saveData[i]);
+        //}
 
         int index = 0;
         while (index < saveData.Count)
         {
-            if (index == 0 || saveData[index - 1] != -1)
+            AddLevelToUI(index);
+            if (saveData[index] != -1)
             {
-                AddLevelToUI(index);
                 index++;
             }
             else
@@ -67,13 +76,22 @@ public class LevelSelect : MonoBehaviour
                 break;
             }
         }
+        unlockedLevelCount = index + 1;
         SelectLevel(index);
     }
 
     // Makes the level accessible in the menu
     private void AddLevelToUI(int index)
     {
-        // LevelList add the prefab
+        GameObject levelButton = Instantiate(LevelListItem, LevelList.transform);
+        levelButton.GetComponentInChildren<Text>().text = $"{index + 1}";
+        levelButton.transform.SetSiblingIndex(index + 1);
+        levelButton.GetComponent<Button>().onClick.AddListener(() => 
+            {
+                int levelIndex = Int32.Parse(levelButton.GetComponentInChildren<Text>().text) - 1;
+                SelectLevel(levelIndex);
+            }
+        );
     }
 
     // Replace level title, chapter number, movecounts
@@ -83,8 +101,37 @@ public class LevelSelect : MonoBehaviour
         Dictionary<string, string> selectedLevelData = levelData[selectedLevel];
 
         TitleText.text = selectedLevelData["title"];
-        MoveCountText.text = $"Current Best: {SaveLoad.SaveData[selectedLevel]} / {selectedLevelData["optMoveCount"]} moves";
+
+        string currentBestString = SaveLoad.SaveData[selectedLevel] != -1 ? $"{SaveLoad.SaveData[selectedLevel]}" : "N/A";
+        MoveCountText.text = $"Current Best: {currentBestString} moves, Optimal: {selectedLevelData["optMoveCount"]} moves";
         ChapterNumberText.text = $"~ {selectedLevel + 1} ~";
+
+        BackButton.interactable = (selectedLevel > 0);
+        ForwardButton.interactable = (selectedLevel < unlockedLevelCount - 1);
+
+        foreach (Text buttonText in LevelList.GetComponentsInChildren<Text>())
+        {
+            if (buttonText.text == $"{selectedLevel + 1}")
+            {
+                buttonText.color = SelectedLevelColor;
+                buttonText.fontSize = SelectedLevelTextSize;
+            }
+            else
+            {
+                buttonText.color = UnselectedLevelColor;
+                buttonText.fontSize = UnselectedLevelTextSize;
+            }
+        }
+    }
+
+    public void OnBackButtonClick()
+    {
+        SelectLevel(selectedLevel - 1);
+    }
+
+    public void OnForwardButtonClick()
+    {
+        SelectLevel(selectedLevel + 1);
     }
 
     public void SetInstructionsPanel(bool isActive)

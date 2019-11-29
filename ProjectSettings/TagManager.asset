@@ -10,6 +10,7 @@ TagManager:
   - Wood
   - Money
   - Dog
+  - Level Button
   layers:
   - Default
   - TransparentFX
