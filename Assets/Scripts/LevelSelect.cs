@@ -8,34 +8,6 @@ public class LevelSelect : MonoBehaviour
 {
     private int selectedLevel;
 
-    private List<Dictionary<string, string>> levelData = new List<Dictionary<string, string>>()
-    {
-        new Dictionary<string, string>() 
-        {
-            { "title", "Child is the Father of Man" },
-            { "sceneName", "Debug" },
-            { "optMoveCounts", "1" }
-        },
-        new Dictionary<string, string>()
-        {
-            { "title", "Corrupted to the Bone with the Beauty of this Forsaken World" },
-            { "sceneName", "Debug" },
-            { "optMoveCounts", "1" }
-        },
-        new Dictionary<string, string>()
-        {
-            { "title", "And Jesus Wept, for there were no more worlds to conquer" },
-            { "sceneName", "Debug" },
-            { "optMoveCounts", "1" }
-        },
-        new Dictionary<string, string>()
-        {
-            { "title", "The Answer" },
-            { "sceneName", "Debug" },
-            { "optMoveCounts", "1" }
-        }
-    };
-
     public Text TitleText;
     public Text MoveCountText;
     public Text ChapterNumberText;
@@ -43,27 +15,76 @@ public class LevelSelect : MonoBehaviour
     public GameObject LevelListItem;
     public GameObject InstructionsPanel;
 
+    private List<Dictionary<string, string>> levelData = new List<Dictionary<string, string>>()
+    {
+        new Dictionary<string, string>()
+        {
+            { "title", "Child is the Father of Man" },
+            { "sceneName", "Debug" },
+            { "optMoveCount", "1" }
+        },
+        new Dictionary<string, string>()
+        {
+            { "title", "Corrupted to the Bone with the Beauty of this Forsaken World" },
+            { "sceneName", "Debug" },
+            { "optMoveCount", "1" }
+        },
+        new Dictionary<string, string>()
+        {
+            { "title", "And Jesus Wept, for there were no more worlds to conquer" },
+            { "sceneName", "Debug" },
+            { "optMoveCount", "1" }
+        },
+        new Dictionary<string, string>()
+        {
+            { "title", "The Answer" },
+            { "sceneName", "Debug" },
+            { "optMoveCount", "1" }
+        }
+    };
+
     void Start()
     {
         SaveLoad.LoadSave();
 
-        // Add level list buttons depending if the previous level was played;
-        // LevelList add whatever
-        // Get the furthest unplayed level, else the last level
-        // SelectLevel(latest)
+        List<int> saveData = SaveLoad.SaveData;
+        //Debug.Log(saveData.ToString());
+        for(int i = 0; i< saveData.Count; i++)
+        {
+            Debug.Log(saveData[i]);
+        }
+
+        int index = 0;
+        while (index < saveData.Count)
+        {
+            if (index == 0 || saveData[index - 1] != -1)
+            {
+                AddLevelToUI(index);
+                index++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        SelectLevel(index);
     }
 
-    // Update is called once per frame
-    void Update()
+    // Makes the level accessible in the menu
+    private void AddLevelToUI(int index)
     {
-        
+        // LevelList add the prefab
     }
 
+    // Replace level title, chapter number, movecounts
     public void SelectLevel(int index)
     {
         selectedLevel = index;
+        Dictionary<string, string> selectedLevelData = levelData[selectedLevel];
 
-        // Replace level title, chapter number, movecounts
+        TitleText.text = selectedLevelData["title"];
+        MoveCountText.text = $"Current Best: {SaveLoad.SaveData[selectedLevel]} / {selectedLevelData["optMoveCount"]} moves";
+        ChapterNumberText.text = $"~ {selectedLevel + 1} ~";
     }
 
     public void SetInstructionsPanel(bool isActive)
@@ -71,9 +92,10 @@ public class LevelSelect : MonoBehaviour
         InstructionsPanel.SetActive(isActive);
     }
 
-    public void OpenLevel(int level)
+    public void OpenLevel()
     {
-        SceneManager.LoadScene("Level_" + level);
+        SaveLoad.CurrentLevel = selectedLevel;
+        SceneManager.LoadScene(levelData[selectedLevel]["sceneName"]);
     }
 
     public void Exit()
