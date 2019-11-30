@@ -11,7 +11,6 @@ public class DestructionEffect : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(SmokeParticles.isStopped + ", " + FireParticles.isStopped);
         if (SmokeParticles.isStopped && FireParticles.isStopped)
         {
             Destroy(gameObject);

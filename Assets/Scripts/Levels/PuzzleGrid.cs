@@ -19,6 +19,7 @@ public class PuzzleGrid : MonoBehaviour
     public List<GameObject> GridObjectPrefabs = new List<GameObject>();
 
     public LevelMenu levelMenu;
+    public Fade SceneTransition;
 
     public enum LevelState
     {
@@ -122,12 +123,12 @@ public class PuzzleGrid : MonoBehaviour
         if (levelState != LevelState.Done && Input.GetKeyDown(KeyCode.Escape))
         {
             // Exit Level
-            SceneManager.LoadScene("Level Select");
+            StartCoroutine(SceneTransition.TransitionToScene("Level Select"));
         }
         else if (levelState != LevelState.Done && Input.GetKeyDown(KeyCode.R))
-            {
+        {
             // Restarts level
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            StartCoroutine(SceneTransition.TransitionToScene(SceneManager.GetActiveScene().name));
         }
         else if (Input.GetKeyDown(KeyCode.Z))
         {

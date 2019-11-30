@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Epigraph.unity
+    guid: 710f49af6614dc74da1c72f326614648
+  - enabled: 1
     path: Assets/Scenes/Level Select.unity
     guid: 1f75bb298ede66d48a74b68cff8cd76d
   - enabled: 1

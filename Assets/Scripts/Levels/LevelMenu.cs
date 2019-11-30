@@ -10,6 +10,7 @@ public class LevelMenu : MonoBehaviour
     public Text MoveCountText;
     public GameObject CompleteMenu;
     public GameObject FailMenu;
+    public Fade SceneTransition;
 
     void Start()
     {
@@ -42,7 +43,7 @@ public class LevelMenu : MonoBehaviour
     public void OnReturnToLevelSelectClick()
     {
         SaveLoad.UpdateLevelMoveCount(moveCount);
-        SceneManager.LoadScene("Level Select");
+        StartCoroutine(SceneTransition.TransitionToScene("Level Select"));
     }
 
     public void ShowCompleteMenuPanel()

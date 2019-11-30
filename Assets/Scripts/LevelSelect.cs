@@ -23,6 +23,7 @@ public class LevelSelect : MonoBehaviour
     public int UnselectedLevelTextSize;
     public int SelectedLevelTextSize;
 
+    public Fade SceneTransition;
 
     private List<Dictionary<string, string>> levelData = new List<Dictionary<string, string>>()
     {
@@ -58,10 +59,6 @@ public class LevelSelect : MonoBehaviour
         SaveLoad.LoadSave();
 
         List<int> saveData = SaveLoad.SaveData;
-        //for(int i = 0; i< saveData.Count; i++)
-        //{
-        //    Debug.Log(saveData[i]);
-        //}
 
         int index = 0;
         while (index < saveData.Count)
@@ -77,7 +74,15 @@ public class LevelSelect : MonoBehaviour
             }
         }
         unlockedLevelCount = index + 1;
-        SelectLevel(index);
+        SelectLevel(SaveLoad.CurrentLevel);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            StartCoroutine(SceneTransition.TransitionToScene("Epigraph"));
+        }
     }
 
     // Makes the level accessible in the menu
@@ -142,7 +147,7 @@ public class LevelSelect : MonoBehaviour
     public void OpenLevel()
     {
         SaveLoad.CurrentLevel = selectedLevel;
-        SceneManager.LoadScene(levelData[selectedLevel]["sceneName"]);
+        StartCoroutine(SceneTransition.TransitionToScene(levelData[selectedLevel]["sceneName"]));
     }
 
     public void Exit()
