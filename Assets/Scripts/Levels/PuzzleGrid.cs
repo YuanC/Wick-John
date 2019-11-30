@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 public class PuzzleGrid : MonoBehaviour
 {
     // Dimensions of the grid
-    public static int gWidth = 20;
-    public static int gHeight = 16;
+    public int gWidth = 20;
+    public int gHeight = 16;
 
     private const int historySize = 1000; // Number of steps to save.
 
-    public GridObject[,] grid = new GridObject[gWidth, gHeight];  // Grid representation of level
+    public GridObject[,] grid;  // Grid representation of level
     private List<string[,]> history = new List<string[,]>();  // Only stores the object tags for recreation purposes
 
     // Maps prefab tags to their prefab objects
@@ -32,6 +32,8 @@ public class PuzzleGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        grid = new GridObject[gWidth, gHeight];
+
         levelState = LevelState.Active;
 
         // Create a map for all prefabs based on their tag
@@ -125,7 +127,7 @@ public class PuzzleGrid : MonoBehaviour
             // Exit Level
             StartCoroutine(SceneTransition.TransitionToScene("Level Select"));
         }
-        else if (levelState != LevelState.Done && Input.GetKeyDown(KeyCode.R))
+        else if (Input.GetKeyDown(KeyCode.R))
         {
             // Restarts level
             StartCoroutine(SceneTransition.TransitionToScene(SceneManager.GetActiveScene().name));
@@ -140,26 +142,43 @@ public class PuzzleGrid : MonoBehaviour
 
                 bool[,] fireGrid = Flammable.PopFireHistory(); // Saves state of fire for objects
 
-                // Recreate Grid
-                foreach (Transform child in transform)
-                {
-                    Destroy(child.gameObject);
-                }
-
+                // Recreates gameobjects for previous grid state
                 for (int i = 0; i < gWidth; i++)
                 { 
                     for (int j = 0; j < gHeight; j++)
                     {
-                        grid[i, j] = null;
-
-                        if (prevGrid[i, j] != null)
+                        if (prevGrid[i, j] == null)
                         {
-                            float[] coords = GridObject.GetGlobalCoordinates(gWidth, gHeight, i, j);
-                            Vector3 pos = new Vector3(coords[0], 0, coords[1]);
-                            GameObject prefab = GridObjectMap[prevGrid[i, j]];
+                            if (grid[i, j] != null)
+                            {
+                                Destroy(grid[i, j].gameObject);
+                            }
+                            grid[i, j] = null;
+                        }
+                        else
+                        {
+                            GameObject obj;
 
-                            GameObject obj = Instantiate(prefab, pos, Quaternion.identity, transform);
-                            
+                            if (grid[i, j] != null &&
+                                grid[i, j].gameObject.tag == prevGrid[i, j])
+                            {
+                                // reuse old prefab
+                                obj = grid[i, j].gameObject;
+                            }
+                            else
+                            {
+                                // Create new prefab
+                                if (grid[i, j] != null)
+                                {
+                                    Destroy(grid[i, j].gameObject);
+                                }
+
+                                float[] coords = GridObject.GetGlobalCoordinates(gWidth, gHeight, i, j);
+                                Vector3 pos = new Vector3(coords[0], 0, coords[1]);
+                                GameObject prefab = GridObjectMap[prevGrid[i, j]];
+                                obj = Instantiate(prefab, pos, Quaternion.identity, transform);
+                            }
+
                             if (obj.GetComponent<Flammable>() != null)
                             {
                                 obj.GetComponent<Flammable>().isLit = fireGrid[i, j];
@@ -183,7 +202,7 @@ public class PuzzleGrid : MonoBehaviour
             if (levelState == LevelState.Active && dir != null)
             {
                 // Calculate candle position after movement, null if no movement
-                GridObject[,] newGrid = Candle.CalculateMovement(grid, dir);
+                GridObject[,] newGrid = GridObject.CalculateMovement(grid, dir);
 
                 // Update Candle Position, if possible based on walls, level limits
                 if (newGrid != null)
@@ -197,27 +216,27 @@ public class PuzzleGrid : MonoBehaviour
                     // Update wet tile interactions
                     WaterGrid.ExtinguishFires(newGrid);
 
-                    // Calculate Puppies damage (Loss condition)
-                    if (!Dog.DogsAreSafe(newGrid)){
+                    // Calculate Loss Conditions
+                    if (!Dog.DogsAreSafe(newGrid))
+                    {
                         levelState = LevelState.Paused;
+                        levelMenu.SendMessage("SetFailMessage", "Doggie Burned... :(");
                         levelMenu.SendMessage("SetFailMenu", true);
                     }
-
-                    // Calculate Candles (Win/Loss condition)
-
-                    if (Candle.AllCandlesLit(newGrid))
+                    else if (Candle.AllCandlesOut(newGrid))
+                    {
+                        levelState = LevelState.Paused;
+                        levelMenu.SendMessage("SetFailMessage", "Flame Lost... :(");
+                        levelMenu.SendMessage("SetFailMenu", true);
+                    }
+                    // Calculate Win Condition
+                    else if (Candle.AllCandlesLit(newGrid))
                     {
                         levelState = LevelState.Done;
                         levelMenu.SendMessage("SetCompleteMenu", true);
                     }
 
-                    if (Candle.AllCandlesOut(newGrid))
-                    {
-                        levelState = LevelState.Paused;
-                        levelMenu.SendMessage("SetFailMenu", true);
-                    }
-
-                    // Increase move counter
+                    // Replace previous grid
                     grid = newGrid;
                 }
             }

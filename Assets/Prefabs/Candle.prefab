@@ -135,6 +135,8 @@ GameObject:
   - component: {fileID: 3651968523530538597}
   - component: {fileID: 3372130086061195746}
   - component: {fileID: 2264543337152334784}
+  - component: {fileID: 2365081978561904855}
+  - component: {fileID: 539664131964491890}
   m_Layer: 0
   m_Name: Candle
   m_TagString: Candle
@@ -170,9 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a36cbff5aad2dc45a5553e40555f436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPosition: {x: 0, y: 0, z: 0}
-  moveSpeed: 10
-  Fire: {fileID: 2264291569723931714}
 --- !u!114 &3372130086061195746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,6 +200,38 @@ MonoBehaviour:
   isDestructable: 0
   Fire: {fileID: 2264291569723931714}
   DestructionEffect: {fileID: 0}
+  ExtinguishEffect: {fileID: 9013568379965165068, guid: b7914026fd0dc5b42bfe74c9634805e4,
+    type: 3}
+--- !u!114 &2365081978561904855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7660451058462986908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3434f33867e61c24b866aac81aec1cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prevRotation: {x: 0, y: 0, z: 0}
+  model: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetRotation: {x: 0, y: 0, z: 0}
+  moveSpeed: 10
+  RandomRotationOnMove: 0
+--- !u!114 &539664131964491890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7660451058462986908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bfbfa3e7c1a7d640b712b9af8db959d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &412693968499527341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -257,6 +288,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.5
       objectReference: {fileID: 0}
@@ -264,9 +299,13 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 400004, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
+    - target: {fileID: 10800000, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
+      propertyPath: m_BoundingSphereOverride.x
+      value: 4.5904e-41
+      objectReference: {fileID: 0}
+    - target: {fileID: 10800000, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: -38054784
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}

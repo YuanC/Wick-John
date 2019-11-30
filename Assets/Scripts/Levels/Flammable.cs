@@ -34,7 +34,7 @@ public class Flammable : MonoBehaviour
         Destroy(gameObject);
     }
 
-public static GridObject[,] PropogateFire(GridObject[,] grid)
+    public static GridObject[,] PropogateFire(GridObject[,] grid)
     {
         // Create FireMap
         bool[,] fireGrid = new bool[grid.GetLength(0), grid.GetLength(1)];

@@ -4,22 +4,17 @@ using UnityEngine;
 
 public class WaterGrid : MonoBehaviour
 {
-    // Dimensions of the grid
-    private int gWidth;
-    private int gHeight;
-
+    public PuzzleGrid pGrid;
     public static bool[,] Grid;
 
     void Start()
     {
-        gWidth = PuzzleGrid.gWidth;
-        gHeight = PuzzleGrid.gHeight;
-        Grid = new bool[gWidth, gHeight];
+        Grid = new bool[pGrid.gWidth, pGrid.gHeight];
 
         // Add all the grid objects in scene to the grid state
         foreach (WaterGridObject obj in GetComponentsInChildren<WaterGridObject>())
         {
-            int[] gCoords = obj.GetGridCoordinates(gWidth, gHeight);
+            int[] gCoords = obj.GetGridCoordinates(pGrid.gWidth, pGrid.gHeight);
             Grid[gCoords[0], gCoords[1]] = true;
         }
     }
@@ -37,9 +32,10 @@ public class WaterGrid : MonoBehaviour
                 
                 if (obj != null &&
                     obj.GetComponent<Flammable>() &&
-                    obj.GetComponent<Flammable>().isLit)
+                    obj.GetComponent<Flammable>().isLit &&
+                    Grid[i, j])
                 {
-                    obj.GetComponent<Flammable>().isLit = !Grid[i, j];
+                    obj.GetComponent<Flammable>().isLit = false;
                 }
             }
         }

@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4565207781045341641}
   - component: {fileID: 6984667486623083031}
-  - component: {fileID: 8344870843654517076}
+  - component: {fileID: 6388171669478607802}
+  - component: {fileID: 2125216254137958775}
   m_Layer: 0
   m_Name: Chair
   m_TagString: Chair
@@ -45,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c298ecb920d9d74a85645e544787a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8344870843654517076
+--- !u!114 &6388171669478607802
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +55,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 667973129676246712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98931e68d38230142b900c67c958e9d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bfbfa3e7c1a7d640b712b9af8db959d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2125216254137958775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667973129676246712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3434f33867e61c24b866aac81aec1cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prevRotation: {x: 0, y: 0, z: 0}
@@ -62,6 +75,7 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0}
   moveSpeed: 10
+  RandomRotationOnMove: 1
 --- !u!1001 &157774384292676218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69,11 +83,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4565207781045341641}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: ca3308dc98603bf4582429cb9545dcf7,
-        type: 3}
-      propertyPath: m_Name
-      value: model
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: ca3308dc98603bf4582429cb9545dcf7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -128,6 +137,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: ca3308dc98603bf4582429cb9545dcf7,
+        type: 3}
+      propertyPath: m_Name
+      value: model
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca3308dc98603bf4582429cb9545dcf7, type: 3}

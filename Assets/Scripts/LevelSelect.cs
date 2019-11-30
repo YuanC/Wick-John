@@ -30,7 +30,7 @@ public class LevelSelect : MonoBehaviour
         new Dictionary<string, string>()
         {
             { "title", "Child is the Father of Man" },
-            { "sceneName", "Debug" },
+            { "sceneName", "Level1" },
             { "optMoveCount", "1" }
         },
         new Dictionary<string, string>()
