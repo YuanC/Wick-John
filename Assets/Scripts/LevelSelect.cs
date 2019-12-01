@@ -33,25 +33,25 @@ public class LevelSelect : MonoBehaviour
         {
             { "title", "Child is the Father of Man" },
             { "sceneName", "Level0" },
-            { "optMoveCount", "23" }
+            { "optMoveCount", "12" }
         },
         new Dictionary<string, string>()
         {
             { "title", "Corrupted to the bone with the beauty of this forsaken world" },
             { "sceneName", "Level1" },
-            { "optMoveCount", "44" }
+            { "optMoveCount", "22" }
         },
         new Dictionary<string, string>()
         {
             { "title", "I will show you fear in a handful of dust" },
             { "sceneName", "Level2" },
-            { "optMoveCount", "94" }
+            { "optMoveCount", "34" }
         },
         new Dictionary<string, string>()
         {
             { "title", "And Jesus wept,\nfor there were no more worlds to conquer" },
             { "sceneName", "Level3" },
-            { "optMoveCount", "N/A" }
+            { "optMoveCount", "71" }
         },
 
         new Dictionary<string, string>()
@@ -64,7 +64,7 @@ public class LevelSelect : MonoBehaviour
         {
             { "title", "The Answer" },
             { "sceneName", "Level5" },
-            { "optMoveCount", "N/A" }
+            { "optMoveCount", "30" }
         }
     };
 
