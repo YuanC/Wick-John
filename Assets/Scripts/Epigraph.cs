@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Scripting for all the intro animations and music
 public class Epigraph : MonoBehaviour
 {
+    // GameObjects to modify
     public Fade Sentence1;
     public Fade Sentence2;
     public Fade QuoteBG;
@@ -30,7 +32,7 @@ public class Epigraph : MonoBehaviour
         StartCoroutine(IntroAnimation());
     }
 
-
+    // Steps for the intro 'cutscene'
     private IEnumerator IntroAnimation()
     {
         yield return new WaitForSeconds(1f);
@@ -71,6 +73,7 @@ public class Epigraph : MonoBehaviour
         StartCoroutine(ContinuePrompt.FadeInAndOut());
     }
 
+    // Listens for input to transition to the level select menu
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))

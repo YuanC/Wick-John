@@ -57,14 +57,14 @@ public class LevelSelect : MonoBehaviour
         new Dictionary<string, string>()
         {
             { "title", "Like when god throws a star\nAnd everyone looks up\nTo see that whip of sparks\nAnd then it's gone" },
-            { "sceneName", "Level3" },
-            { "optMoveCount", "N/A" }
+            { "sceneName", "Level4" },
+            { "optMoveCount", ">100" }
         },
         new Dictionary<string, string>()
         {
             { "title", "The Answer" },
             { "sceneName", "Level5" },
-            { "optMoveCount", "30" }
+            { "optMoveCount", "11" }
         }
     };
 
@@ -89,7 +89,7 @@ public class LevelSelect : MonoBehaviour
                 break;
             }
         }
-        unlockedLevelCount = index + 1;
+        unlockedLevelCount = Mathf.Min(index + 1, saveData.Count);
         SelectLevel(SaveLoad.CurrentLevel);
         StartCoroutine(musicSource.FadeIn());
     }
@@ -109,7 +109,7 @@ public class LevelSelect : MonoBehaviour
         {
             SelectLevel(selectedLevel - 1);
         }
-        else if (Input.GetKeyDown(KeyCode.Return))
+        else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
         {
             OpenLevel();
         }
@@ -169,6 +169,29 @@ public class LevelSelect : MonoBehaviour
         SelectLevel(selectedLevel + 1);
     }
 
+    public void OpenLevel()
+    {
+        SaveLoad.CurrentLevel = selectedLevel;
+        StartCoroutine(musicSource.FadeOut());
+        StartCoroutine(SceneTransition.TransitionToScene(levelData[selectedLevel]["sceneName"]));
+    }
+
+    public void OnDeleteSave()
+    {
+        SaveLoad.DeleteSave();
+        SaveLoad.CurrentLevel = 0;
+        StartCoroutine(musicSource.FadeOut());
+        StartCoroutine(SceneTransition.TransitionToScene(SceneManager.GetActiveScene().name));
+    }
+
+    public void OnUnlockAllLevels()
+    {
+        SaveLoad.UnlockAllLevels();
+        SaveLoad.CurrentLevel = 0;
+        StartCoroutine(musicSource.FadeOut());
+        StartCoroutine(SceneTransition.TransitionToScene(SceneManager.GetActiveScene().name));
+    }
+
     public void SetInstructionsPanel(bool isActive)
     {
         InstructionsPanel.SetActive(isActive);
@@ -177,13 +200,6 @@ public class LevelSelect : MonoBehaviour
     public void SetAttributionPanel(bool isActive)
     {
         AttributionPanel.SetActive(isActive);
-    }
-
-    public void OpenLevel()
-    {
-        SaveLoad.CurrentLevel = selectedLevel;
-        StartCoroutine(musicSource.FadeOut());
-        StartCoroutine(SceneTransition.TransitionToScene(levelData[selectedLevel]["sceneName"]));
     }
 
     public void Exit()

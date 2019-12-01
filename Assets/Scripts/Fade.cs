@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+// Scripts for fade-able objects
 public class Fade : MonoBehaviour
 {
     private bool transitioning;

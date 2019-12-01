@@ -24,6 +24,11 @@ public class LevelMenu : MonoBehaviour
     void Update()
     {
         MoveCountText.text = "Moves: " + moveCount;
+
+        if (Input.GetKeyDown(KeyCode.Return) && CompleteMenu.activeSelf)
+        {
+            OnReturnToLevelSelectClick();
+        }
     }
 
     // Message handler for increasing movecount 

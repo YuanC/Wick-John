@@ -75,9 +75,6 @@ public class PuzzleGrid : MonoBehaviour
         {
             history.RemoveRange(historySize, history.Count - historySize);
         }
-
-        //Debug.Log("New Grid added: " + history.Count + " / " + historySize);
-        //PrintGrid();
     }
 
     // Prints the current grid state

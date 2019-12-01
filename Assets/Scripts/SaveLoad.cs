@@ -8,7 +8,7 @@ public static class SaveLoad
 {
     // Class for saving and loading a persistent leaderboard
     //public static List<int> SaveData = new List<int>() {1, 1, 1, 1, 1,-1};
-    public static List<int> SaveData = new List<int>() { -1, -1, -1, -1, -1, -1 };
+    public static List<int> SaveData;
 
     public static int CurrentLevel = 0;
 
@@ -17,7 +17,14 @@ public static class SaveLoad
     {
         if (CurrentLevel >= 0 && CurrentLevel < SaveData.Count)
         {
-            SaveData[CurrentLevel] = Mathf.Min(SaveData[CurrentLevel], moveCount);
+            if (SaveData[CurrentLevel] == -1)
+            {
+                SaveData[CurrentLevel] = moveCount;
+            }
+            else
+            {
+                SaveData[CurrentLevel] = Mathf.Min(SaveData[CurrentLevel], moveCount);
+            }
 
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Create(Application.persistentDataPath + "/SaveData.gd");
@@ -33,10 +40,34 @@ public static class SaveLoad
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/SaveData.gd", FileMode.Open);
-            Debug.Log(Application.persistentDataPath + "/SaveData.gd");
-            //SaveLoad.SaveData = (List<int>)bf.Deserialize(file);
-            SaveLoad.SaveData = new List<int>() { 1, 1, 1, 1, 1, -1 };
+            SaveLoad.SaveData = (List<int>)bf.Deserialize(file);
             file.Close();
         }
+        else
+        {
+            SaveData = new List<int>() { -1, -1, -1, -1, -1, -1 };
+        }
+    }
+
+    // Save Debugging Purposes
+    public static void DeleteSave()
+    {
+        SaveData = new List<int>() { -1, -1, -1, -1, -1, -1 };
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/SaveData.gd");
+        bf.Serialize(file, SaveLoad.SaveData);
+        file.Close();
+    }
+
+    // Save Debugging Purposes
+    public static void UnlockAllLevels()
+    {
+        SaveData = new List<int>() { 500, 500, 500, 500, 500, 500 };
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/SaveData.gd");
+        bf.Serialize(file, SaveLoad.SaveData);
+        file.Close();
     }
 }
