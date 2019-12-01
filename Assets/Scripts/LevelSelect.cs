@@ -51,7 +51,7 @@ public class LevelSelect : MonoBehaviour
         {
             { "title", "And Jesus wept,\nfor there were no more worlds to conquer" },
             { "sceneName", "Level3" },
-            { "optMoveCount", "71" }
+            { "optMoveCount", "67" }
         },
 
         new Dictionary<string, string>()
