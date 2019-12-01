@@ -7,8 +7,8 @@ using System.IO;
 public static class SaveLoad
 {
     // Class for saving and loading a persistent leaderboard
-    public static List<int> SaveData = new List<int>() {1, 1, 1, 1, 1,-1};
-    //public static List<int> SaveData = new List<int>() {-1, -1, -1, -1, -1, -1};
+    //public static List<int> SaveData = new List<int>() {1, 1, 1, 1, 1,-1};
+    public static List<int> SaveData = new List<int>() { -1, -1, -1, -1, -1, -1 };
 
     public static int CurrentLevel = 0;
 
@@ -33,7 +33,9 @@ public static class SaveLoad
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/SaveData.gd", FileMode.Open);
-            SaveLoad.SaveData = (List<int>)bf.Deserialize(file);
+            Debug.Log(Application.persistentDataPath + "/SaveData.gd");
+            //SaveLoad.SaveData = (List<int>)bf.Deserialize(file);
+            SaveLoad.SaveData = new List<int>() { 1, 1, 1, 1, 1, -1 };
             file.Close();
         }
     }
