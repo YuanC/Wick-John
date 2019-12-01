@@ -13,6 +13,7 @@ public class Epigraph : MonoBehaviour
     public Fade ContinuePrompt;
 
     public Fade SceneTransition;
+    public MusicSource musicSource;
 
     // Initial state for all objects
     void Start()
@@ -32,11 +33,15 @@ public class Epigraph : MonoBehaviour
 
     private IEnumerator IntroAnimation()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
+
+        StartCoroutine(musicSource.FadeIn());
+
+        yield return new WaitForSeconds(1.2f);
 
         StartCoroutine(Sentence1.FadeIn());
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
 
         StartCoroutine(Sentence2.FadeIn());
 
@@ -64,7 +69,6 @@ public class Epigraph : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         StartCoroutine(ContinuePrompt.FadeInAndOut());
-
     }
 
     void Update()
@@ -76,6 +80,7 @@ public class Epigraph : MonoBehaviour
         else if (Input.anyKey)
         {
             // Skip transition animation
+            StartCoroutine(musicSource.FadeOut());
             StartCoroutine(SceneTransition.TransitionToScene("Level Select"));
         }
     }

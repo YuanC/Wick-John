@@ -20,6 +20,7 @@ public class PuzzleGrid : MonoBehaviour
 
     public LevelMenu levelMenu;
     public Fade SceneTransition;
+    public MusicSource musicSource;
 
     public enum LevelState
     {
@@ -32,6 +33,7 @@ public class PuzzleGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        musicSource.FadeIn();
         grid = new GridObject[gWidth, gHeight];
 
         levelState = LevelState.Active;
@@ -125,11 +127,13 @@ public class PuzzleGrid : MonoBehaviour
         if (levelState != LevelState.Done && Input.GetKeyDown(KeyCode.Escape))
         {
             // Exit Level
+            musicSource.FadeOut();
             StartCoroutine(SceneTransition.TransitionToScene("Level Select"));
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
             // Restarts level
+            musicSource.FadeOut();
             StartCoroutine(SceneTransition.TransitionToScene(SceneManager.GetActiveScene().name));
         }
         else if (Input.GetKeyDown(KeyCode.Z))

@@ -297,7 +297,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19849462, guid: e1a2925d7da5449ecb99c16ed61d49f4, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
-      value: 1
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19849462, guid: e1a2925d7da5449ecb99c16ed61d49f4, type: 3}
+      propertyPath: InitialModule.startSpeed.minScalar
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 19849462, guid: e1a2925d7da5449ecb99c16ed61d49f4, type: 3}
       propertyPath: InitialModule.startSize.scalar

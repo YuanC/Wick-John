@@ -12,6 +12,7 @@ public class LevelMenu : MonoBehaviour
     public GameObject CompleteMenu;
     public GameObject FailMenu;
     public Fade SceneTransition;
+    public MusicSource musicSource;
 
     void Start()
     {
@@ -49,12 +50,14 @@ public class LevelMenu : MonoBehaviour
     public void OnReturnToLevelSelectClick()
     {
         SaveLoad.UpdateLevelMoveCount(moveCount);
+        musicSource.FadeOut();
         StartCoroutine(SceneTransition.TransitionToScene("Level Select"));
     }
 
     public void OnRetryClick()
     {
         SaveLoad.UpdateLevelMoveCount(moveCount);
+        musicSource.FadeOut();
         StartCoroutine(SceneTransition.TransitionToScene(SceneManager.GetActiveScene().name));
     }
 

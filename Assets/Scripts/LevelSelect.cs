@@ -16,6 +16,7 @@ public class LevelSelect : MonoBehaviour
     public GameObject LevelList;
     public GameObject LevelListItem;
     public GameObject InstructionsPanel;
+    public GameObject AttributionPanel;
     public Button BackButton;
     public Button ForwardButton;
     public Color UnselectedLevelColor;
@@ -24,24 +25,38 @@ public class LevelSelect : MonoBehaviour
     public int SelectedLevelTextSize;
 
     public Fade SceneTransition;
+    public MusicSource musicSource;
 
     private List<Dictionary<string, string>> levelData = new List<Dictionary<string, string>>()
     {
         new Dictionary<string, string>()
         {
             { "title", "Child is the Father of Man" },
-            { "sceneName", "Level1" },
+            { "sceneName", "Level0" },
             { "optMoveCount", "1" }
         },
         new Dictionary<string, string>()
         {
             { "title", "Corrupted to the Bone with the Beauty of this Forsaken World" },
+            { "sceneName", "Level1" },
+            { "optMoveCount", "23" }
+        },
+        new Dictionary<string, string>()
+        {
+            { "title", "I will show you fear in a handful of dust" },
             { "sceneName", "Debug" },
             { "optMoveCount", "1" }
         },
         new Dictionary<string, string>()
         {
             { "title", "And Jesus Wept, for there were no more worlds to conquer" },
+            { "sceneName", "Debug" },
+            { "optMoveCount", "1" }
+        },
+
+        new Dictionary<string, string>()
+        {
+            { "title", "Like when god throws a star\nAnd everone looks up\nTo see that whip of sparks\nAnd then it's gone" },
             { "sceneName", "Debug" },
             { "optMoveCount", "1" }
         },
@@ -56,6 +71,7 @@ public class LevelSelect : MonoBehaviour
     void Start()
     {
         InstructionsPanel.SetActive(false);
+        AttributionPanel.SetActive(false);
         SaveLoad.LoadSave();
 
         List<int> saveData = SaveLoad.SaveData;
@@ -75,6 +91,7 @@ public class LevelSelect : MonoBehaviour
         }
         unlockedLevelCount = index + 1;
         SelectLevel(SaveLoad.CurrentLevel);
+        StartCoroutine(musicSource.FadeIn());
     }
 
     void Update()
@@ -82,6 +99,19 @@ public class LevelSelect : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             StartCoroutine(SceneTransition.TransitionToScene("Epigraph"));
+            StartCoroutine(musicSource.FadeOut());
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && selectedLevel < unlockedLevelCount - 1)
+        {
+            SelectLevel(selectedLevel + 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) && selectedLevel > 0)
+        {
+            SelectLevel(selectedLevel - 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Return))
+        {
+            OpenLevel();
         }
     }
 
@@ -108,7 +138,7 @@ public class LevelSelect : MonoBehaviour
         TitleText.text = selectedLevelData["title"];
 
         string currentBestString = SaveLoad.SaveData[selectedLevel] != -1 ? $"{SaveLoad.SaveData[selectedLevel]}" : "N/A";
-        MoveCountText.text = $"Current Best: {currentBestString} moves, Optimal: {selectedLevelData["optMoveCount"]} moves";
+        MoveCountText.text = $"Current Best Movecount: {currentBestString}, Optimal Movecount: {selectedLevelData["optMoveCount"]}";
         ChapterNumberText.text = $"~ Chapter {selectedLevel + 1} ~";
 
         BackButton.interactable = (selectedLevel > 0);
@@ -144,9 +174,15 @@ public class LevelSelect : MonoBehaviour
         InstructionsPanel.SetActive(isActive);
     }
 
+    public void SetAttributionPanel(bool isActive)
+    {
+        AttributionPanel.SetActive(isActive);
+    }
+
     public void OpenLevel()
     {
         SaveLoad.CurrentLevel = selectedLevel;
+        StartCoroutine(musicSource.FadeOut());
         StartCoroutine(SceneTransition.TransitionToScene(levelData[selectedLevel]["sceneName"]));
     }
 

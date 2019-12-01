@@ -107,7 +107,6 @@ public class Fade : MonoBehaviour
         }
     }
 
-
     public IEnumerator FadeTransitionImageOut()
     {
         Color color = TransitionImage.color;
