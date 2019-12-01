@@ -33,7 +33,6 @@ public class PuzzleGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        musicSource.FadeIn();
         grid = new GridObject[gWidth, gHeight];
 
         levelState = LevelState.Active;
@@ -51,6 +50,7 @@ public class PuzzleGrid : MonoBehaviour
             grid[gCoords[0], gCoords[1]] = gridObj;
         }
         SaveGridToHistory();
+        StartCoroutine(musicSource.FadeIn());
     }
 
     // Adds the current grid state to the undo stack
@@ -127,13 +127,13 @@ public class PuzzleGrid : MonoBehaviour
         if (levelState != LevelState.Done && Input.GetKeyDown(KeyCode.Escape))
         {
             // Exit Level
-            musicSource.FadeOut();
+            StartCoroutine(musicSource.FadeOut());
             StartCoroutine(SceneTransition.TransitionToScene("Level Select"));
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
             // Restarts level
-            musicSource.FadeOut();
+            StartCoroutine(musicSource.FadeOut());
             StartCoroutine(SceneTransition.TransitionToScene(SceneManager.GetActiveScene().name));
         }
         else if (Input.GetKeyDown(KeyCode.Z))

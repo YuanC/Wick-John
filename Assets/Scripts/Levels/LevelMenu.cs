@@ -50,14 +50,14 @@ public class LevelMenu : MonoBehaviour
     public void OnReturnToLevelSelectClick()
     {
         SaveLoad.UpdateLevelMoveCount(moveCount);
-        musicSource.FadeOut();
+        StartCoroutine(musicSource.FadeOut());
         StartCoroutine(SceneTransition.TransitionToScene("Level Select"));
     }
 
     public void OnRetryClick()
     {
         SaveLoad.UpdateLevelMoveCount(moveCount);
-        musicSource.FadeOut();
+        StartCoroutine(musicSource.FadeOut());
         StartCoroutine(SceneTransition.TransitionToScene(SceneManager.GetActiveScene().name));
     }
 

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MusicSource : MonoBehaviour
 {
-    public float FadeDuration = .5f;
     private AudioSource audioSource;
+    
+    public float FadeDuration = .5f;
     public float StartTime = 0f;
 
-    // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();

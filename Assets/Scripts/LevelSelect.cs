@@ -37,33 +37,33 @@ public class LevelSelect : MonoBehaviour
         },
         new Dictionary<string, string>()
         {
-            { "title", "Corrupted to the Bone with the Beauty of this Forsaken World" },
+            { "title", "Corrupted to the bone with the beauty of this forsaken world" },
             { "sceneName", "Level1" },
             { "optMoveCount", "23" }
         },
         new Dictionary<string, string>()
         {
             { "title", "I will show you fear in a handful of dust" },
-            { "sceneName", "Debug" },
+            { "sceneName", "Level2" },
             { "optMoveCount", "1" }
         },
         new Dictionary<string, string>()
         {
-            { "title", "And Jesus Wept, for there were no more worlds to conquer" },
-            { "sceneName", "Debug" },
+            { "title", "And Jesus wept,\nfor there were no more worlds to conquer" },
+            { "sceneName", "Level3" },
             { "optMoveCount", "1" }
         },
 
         new Dictionary<string, string>()
         {
-            { "title", "Like when god throws a star\nAnd everone looks up\nTo see that whip of sparks\nAnd then it's gone" },
-            { "sceneName", "Debug" },
+            { "title", "Like when god throws a star\nAnd everyone looks up\nTo see that whip of sparks\nAnd then it's gone" },
+            { "sceneName", "Level4" },
             { "optMoveCount", "1" }
         },
         new Dictionary<string, string>()
         {
             { "title", "The Answer" },
-            { "sceneName", "Debug" },
+            { "sceneName", "Level5" },
             { "optMoveCount", "1" }
         }
     };

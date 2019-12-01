@@ -478,9 +478,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.19530971, g: 0.7264151, b: 0.6602785, a: 1}
-    m_PressedColor: {r: 0.070977226, g: 0.5188679, b: 0.5188679, a: 1}
-    m_SelectedColor: {r: 0.28261837, g: 0.6886792, b: 0.68166214, a: 1}
+    m_HighlightedColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+    m_PressedColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 1}
+    m_SelectedColor: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -607,9 +607,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.19530971, g: 0.7264151, b: 0.6602785, a: 1}
-    m_PressedColor: {r: 0.070977226, g: 0.5188679, b: 0.5188679, a: 1}
-    m_SelectedColor: {r: 0.28261837, g: 0.6886792, b: 0.68166214, a: 1}
+    m_HighlightedColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+    m_PressedColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 1}
+    m_SelectedColor: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -914,6 +914,7 @@ MonoBehaviour:
   CompleteMenu: {fileID: 7794933940602065293}
   FailMenu: {fileID: 7794933940290900371}
   SceneTransition: {fileID: 329157099902998355}
+  musicSource: {fileID: 0}
 --- !u!1 &7794933942080435001
 GameObject:
   m_ObjectHideFlags: 0

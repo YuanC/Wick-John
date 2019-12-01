@@ -8,6 +8,7 @@ public static class SaveLoad
 {
     // Class for saving and loading a persistent leaderboard
     public static List<int> SaveData = new List<int>() {1, 1, 1, 1, 1,-1};
+    //public static List<int> SaveData = new List<int>() {-1, -1, -1, -1, -1, -1};
 
     public static int CurrentLevel = 0;
 

@@ -100,7 +100,7 @@ Material:
     - _WaveScrollSpeed: 0.1
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.02352941, g: 0.64904994, b: 1, a: 1}
+    - _Color: {r: 0.3268512, g: 0.5108553, b: 0.6132076, a: 1}
     - _DiffuseColor: {r: 0, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0.00627449, g: 0.008907402, b: 0.009433985, a: 1}
     - _SpecularColor: {r: 0.0141509175, g: 1, b: 0.94598085, a: 1}
