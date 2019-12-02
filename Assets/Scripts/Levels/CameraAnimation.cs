@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Interpolated animation for the camera upon the start of each level
 public class CameraAnimation : MonoBehaviour
 {
+    // Parameters for beginning and ending transform values
     public Vector3 StartPosition;
     public Vector3 StartRotation;
     public float SmoothTime = 1f;
@@ -13,7 +15,6 @@ public class CameraAnimation : MonoBehaviour
     private Vector3 posVelocity = Vector3.zero;
     private Vector3 rotVelocity = Vector3.zero;
 
-    // Update is called once per frame
     void Start()
     {
         targetPosition = transform.position;
@@ -23,9 +24,9 @@ public class CameraAnimation : MonoBehaviour
         transform.eulerAngles = StartRotation;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Interpolates per frame
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref posVelocity, SmoothTime);
         transform.eulerAngles = Vector3.SmoothDamp(transform.eulerAngles, targetRotation, ref rotVelocity, SmoothTime);
     }

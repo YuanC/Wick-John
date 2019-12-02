@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Spins the object around the target position
 public class RotateAround : MonoBehaviour
 {
     private Vector3 target = new Vector3(0.0f, 1.5f, 0.0f);

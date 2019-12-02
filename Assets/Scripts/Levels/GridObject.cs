@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Base object for all grid objects
+// Basically any object recognized as in the game grid in the level
 public class GridObject : MonoBehaviour
 {
-    // Base object for all grid objects
 
     // Get the grid coordinates of this object depending on the dimensions of the grid
     public int[] GetGridCoordinates(int x, int y)
@@ -24,8 +25,10 @@ public class GridObject : MonoBehaviour
         return gCoords;
     }
 
-    // Determines the candles' new positions, if possible.
-    // I'm not too proud of this function...
+    // Determines the candles' new positions, if possible, and applies them to the grid
+    //
+    // Not too proud of this function, as there is probably a superior direction-agnostic implementation
+    // But I'm too lazy to refactor this as-is, and it works so far...
     public static GridObject[,] CalculateMovement(GridObject[,] grid, string dir)
     {
         bool movementPossible = false;
@@ -147,7 +150,7 @@ public class GridObject : MonoBehaviour
                             gObj.GetComponent<Candle>() &&
                             i < x - 1 &&
                             gObj.GetComponent<Flammable>().isLit &&
-                            Pushable.ObjectsPushable(newGrid, i, j, dir)) // Won't break boundaries and is blank tile
+                            Pushable.ObjectsPushable(newGrid, i, j, dir))
                         {
                             Pushable.PushObjects(newGrid, i, j, dir);
 
@@ -170,7 +173,7 @@ public class GridObject : MonoBehaviour
                 break;
         }
 
-        // Can only move when block is empty
+        // Returns new movement, or null if impossible to move
         return movementPossible ? newGrid : null;
     }
 }

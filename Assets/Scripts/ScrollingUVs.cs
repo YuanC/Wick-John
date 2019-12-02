@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Scrolls the texture UVs over time
 public class ScrollingUVs : MonoBehaviour
 {
     private Renderer rend;

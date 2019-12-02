@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Component for candles
 public class Candle : MonoBehaviour
 {
+    // Determines from grid if all the candles were on fire
     public static bool AllCandlesLit(GridObject[,] grid)
     {
         int width = grid.GetLength(0);
@@ -27,6 +29,7 @@ public class Candle : MonoBehaviour
         return true;
     }
 
+    // Determines from grid if all the candles are unlit
     public static bool AllCandlesOut(GridObject[,] grid)
     {
         int width = grid.GetLength(0);

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 
+// Main manager for the LevelSelect scene.
 public class LevelSelect : MonoBehaviour
 {
     private int selectedLevel;
@@ -27,6 +28,7 @@ public class LevelSelect : MonoBehaviour
     public Fade SceneTransition;
     public MusicSource musicSource;
 
+    // Configuration for all the levels
     private List<Dictionary<string, string>> levelData = new List<Dictionary<string, string>>()
     {
         new Dictionary<string, string>()
@@ -58,7 +60,7 @@ public class LevelSelect : MonoBehaviour
         {
             { "title", "Like when god throws a star\nAnd everyone looks up\nTo see that whip of sparks\nAnd then it's gone" },
             { "sceneName", "Level4" },
-            { "optMoveCount", ">100" }
+            { "optMoveCount", "110" }
         },
         new Dictionary<string, string>()
         {
@@ -68,6 +70,7 @@ public class LevelSelect : MonoBehaviour
         }
     };
 
+    // Load save data and configure the level list based on current progress
     void Start()
     {
         InstructionsPanel.SetActive(false);
@@ -94,6 +97,7 @@ public class LevelSelect : MonoBehaviour
         StartCoroutine(musicSource.FadeIn());
     }
 
+    // Handles input for navigating level selection
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -115,7 +119,7 @@ public class LevelSelect : MonoBehaviour
         }
     }
 
-    // Makes the level accessible in the menu
+    // Makes the level accessible in the menu's bottom level list
     private void AddLevelToUI(int index)
     {
         GameObject levelButton = Instantiate(LevelListItem, LevelList.transform);
@@ -129,7 +133,7 @@ public class LevelSelect : MonoBehaviour
         );
     }
 
-    // Replace level title, chapter number, movecounts
+    // Replace level title, chapter number, movecounts upon switching to a new level
     public void SelectLevel(int index)
     {
         selectedLevel = index;
@@ -159,16 +163,19 @@ public class LevelSelect : MonoBehaviour
         }
     }
 
+    // Handles clicking the left arrow in the level list
     public void OnBackButtonClick()
     {
         SelectLevel(selectedLevel - 1);
     }
 
+    // Handles clicking the right arrow in the level list
     public void OnForwardButtonClick()
     {
         SelectLevel(selectedLevel + 1);
     }
 
+    // Transitions to the specified level scene
     public void OpenLevel()
     {
         SaveLoad.CurrentLevel = selectedLevel;
@@ -176,6 +183,7 @@ public class LevelSelect : MonoBehaviour
         StartCoroutine(SceneTransition.TransitionToScene(levelData[selectedLevel]["sceneName"]));
     }
 
+    // Resets save data, for debugging
     public void OnDeleteSave()
     {
         SaveLoad.DeleteSave();
@@ -184,6 +192,7 @@ public class LevelSelect : MonoBehaviour
         StartCoroutine(SceneTransition.TransitionToScene(SceneManager.GetActiveScene().name));
     }
 
+    // Unlocks all of the levels, for debugging
     public void OnUnlockAllLevels()
     {
         SaveLoad.UnlockAllLevels();
@@ -192,16 +201,19 @@ public class LevelSelect : MonoBehaviour
         StartCoroutine(SceneTransition.TransitionToScene(SceneManager.GetActiveScene().name));
     }
 
+    // Shows/hides the instructions panel
     public void SetInstructionsPanel(bool isActive)
     {
         InstructionsPanel.SetActive(isActive);
     }
 
+    // Shows/hides the credits panel
     public void SetAttributionPanel(bool isActive)
     {
         AttributionPanel.SetActive(isActive);
     }
 
+    // Handles the exit button
     public void Exit()
     {
         Application.Quit();

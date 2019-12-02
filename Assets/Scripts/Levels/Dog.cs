@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Component for fragile grid objects (AKA dogs)
 public class Dog : MonoBehaviour
 {
+    // Determines if all dogs are on fire or not
     public static bool DogsAreSafe(GridObject[,] grid)
     {
         int width = grid.GetLength(0);

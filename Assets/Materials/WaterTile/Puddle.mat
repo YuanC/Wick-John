@@ -94,7 +94,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 1
     - _GlossyReflections: 1
-    - _Metallic: 0.456
+    - _Metallic: 0.71
     - _MinuteDetailIntensity: 1
     - _MinuteDetailScrollSpeed: 0.1
     - _Mode: 3
@@ -110,7 +110,7 @@ Material:
     - _WaveScrollSpeed: 0.1
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0.32156864}
+    - _Color: {r: 0.6963332, g: 0.9056604, b: 0.86040133, a: 0.32941177}
     - _DiffuseColor: {r: 0, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0.24705882, b: 0.42745098, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}

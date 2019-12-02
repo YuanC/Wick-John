@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 2D array representing which tiles are wet
 public class WaterGrid : MonoBehaviour
 {
     public PuzzleGrid pGrid;
@@ -19,6 +20,7 @@ public class WaterGrid : MonoBehaviour
         }
     }
 
+    // Applies the watergrid to the main grid in order to extinguish lit grid objects
     public static void ExtinguishFires(GridObject[,] grid)
     {
         int width = grid.GetLength(0);

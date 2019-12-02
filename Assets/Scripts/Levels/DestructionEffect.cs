@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Dramatic Smoke Effect for when the Flammable object burns up
 public class DestructionEffect : MonoBehaviour
 {
-    // Smoke Effect for when the Flammable object burns up
-
     public ParticleSystem SmokeParticles;
     public ParticleSystem FireParticles;
 

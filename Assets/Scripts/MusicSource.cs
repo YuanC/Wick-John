@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Wrapper for AudioSource for fading the audio in and out
 public class MusicSource : MonoBehaviour
 {
     private AudioSource audioSource;

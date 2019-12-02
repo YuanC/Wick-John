@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Component for all movable objects.
 public class Movable : MonoBehaviour
 {
     public Vector3 prevRotation;
@@ -11,9 +12,8 @@ public class Movable : MonoBehaviour
     public Vector3 targetRotation;
     public float moveSpeed = 10;
 
-    public bool RandomRotationOnMove = false;
+    public bool RandomRotationOnMove = false;   // For chairs, which swivel when pushed
 
-    // Start is called before the first frame update
     void Start()
     {
         targetPosition = transform.position;
@@ -25,10 +25,9 @@ public class Movable : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    // Travel, rotate toward target position
     void Update()
     {
-        // Travel, rotate toward target position
         Vector3 diff = targetPosition - transform.position;
 
         if (RandomRotationOnMove)
@@ -55,6 +54,7 @@ public class Movable : MonoBehaviour
         }
     }
 
+    // Set a new destination/rotation to interpolate to
     public void SetNewTargetPosition(Vector3 position)
     {
         targetPosition = position;

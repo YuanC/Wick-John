@@ -21,7 +21,7 @@ Level Gameplay:
  - Object types:
    - Immovable Walls
    - Push-able blocks
-   - Flammable cobwebs (propagates to adjacent cobwebs)
+   - Flammable tree stumps (propagates to adjacent cobwebs)
    - Puppies (avoid touching or else they will get hurt and fail the level)
    - Wet/rain tiles, which will extinguish your candle’s flames
    - Light-able candles

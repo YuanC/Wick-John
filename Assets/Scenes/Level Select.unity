@@ -1592,7 +1592,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &978541238
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2309,10 +2309,10 @@ RectTransform:
   m_Father: {fileID: 978541238}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 3.4}
-  m_SizeDelta: {x: 400, y: 400}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1466548460
 MonoBehaviour:
@@ -2359,10 +2359,12 @@ MonoBehaviour:
     Chairs are subject to pushing, along with other unlit candles.
 
 
-    Be wary of wet tiles, for they will extinguish your light.
+    Be wary of wet tiles, for they will extinguish your light. You may wish to exploit
+    the fact that objects in water do not catch fire.
 
 
-    And lastly, please do not bring harm to the puppies which idle in the fields.'
+    And lastly, please do not bring harm to the puppies which idle in the fields.
+    They may also be pushed, just not directly by your touch.'
 --- !u!222 &1466548461
 CanvasRenderer:
   m_ObjectHideFlags: 0

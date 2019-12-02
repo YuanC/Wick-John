@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// Represents the grid of the puzzle, and also handles input, state, etc...
 public class PuzzleGrid : MonoBehaviour
 {
     // Dimensions of the grid
@@ -116,11 +117,10 @@ public class PuzzleGrid : MonoBehaviour
         return dir;
     }
 
-    // Update is called once per frame
+    // Checks for input, and modifies UI / grid accordingly
     void Update()
     {
         // Crappy but nonetheless working input handling implementation
-
         if (levelState != LevelState.Done && Input.GetKeyDown(KeyCode.Escape))
         {
             // Exit Level

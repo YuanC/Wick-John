@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Component for pushable grid objects
 public class Pushable : MonoBehaviour
 {
+    // Checks if it is possible to push objects in a certain direction
     public static bool ObjectsPushable(GridObject[,] grid, int x, int y, string dir)
     {
         bool pushable = false;
         int width = grid.GetLength(0);
         int height = grid.GetLength(1);
 
+        // iterates down a line of pushable objects until a free tile is found
         switch (dir)
         {
             case "up":
@@ -80,7 +83,7 @@ public class Pushable : MonoBehaviour
         return pushable;
     }
 
-    // Pushes all the chairs in the direction to make room for the candle
+    // Pushes all the pushable objects in the direction to make room for the candle
     public static void PushObjects(GridObject[,] grid, int x, int y, string dir)
     {
         int width = grid.GetLength(0);
@@ -88,6 +91,7 @@ public class Pushable : MonoBehaviour
 
         GridObject prev = null;
 
+        // Shifts all grid objects by one in the specified direction
         switch (dir)
         {
             case "up":
