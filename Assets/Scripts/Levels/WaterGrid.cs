@@ -32,6 +32,7 @@ public class WaterGrid : MonoBehaviour
             {
                 GridObject obj = grid[i, j];
                 
+                // Performance: we should probably make this into a seperate <Flammable> grid so we don't ahve to call GetComponent() each frame
                 if (obj != null &&
                     obj.GetComponent<Flammable>() &&
                     obj.GetComponent<Flammable>().isLit &&

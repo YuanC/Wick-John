@@ -6,6 +6,7 @@ using UnityEngine;
 public class Pushable : MonoBehaviour
 {
     // Checks if it is possible to push objects in a certain direction
+    // The direction parameter should probably be set by an enum :P
     public static bool ObjectsPushable(GridObject[,] grid, int x, int y, string dir)
     {
         bool pushable = false;
