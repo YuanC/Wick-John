@@ -1,4 +1,4 @@
-# SDK3
+# Wick John
 
 This is my submission for the 4482A Tier 3 APP assignment.
 
