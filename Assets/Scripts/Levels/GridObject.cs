@@ -28,7 +28,10 @@ public class GridObject : MonoBehaviour
     // Determines the candles' new positions, if possible, and applies them to the grid
     //
     // Not too proud of this function, as there is probably a superior direction-agnostic implementation
-    // But I'm too lazy to refactor this as-is, and it works so far...
+    // But it's too late to refactor this as-is, and it works so far...
+    // Also, there's quite a bit of GetComponents() in here as well.
+    // It shouldn't be too bad for now, since the level grids are still relatively small.
+    // If you wish to add stuff to the game, it would probably be wise to do this some other way.
     public static GridObject[,] CalculateMovement(GridObject[,] grid, string dir)
     {
         bool movementPossible = false;

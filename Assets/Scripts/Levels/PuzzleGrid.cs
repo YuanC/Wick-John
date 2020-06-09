@@ -16,6 +16,10 @@ public class PuzzleGrid : MonoBehaviour
     private List<string[,]> history = new List<string[,]>();  // Only stores the object tags for recreation purposes
 
     // Maps prefab tags to their prefab objects
+    // Performance: it's really slow to keep using GetComponent() on each of the elements.
+    // In the future, we should split this into multiple grids instead.
+    // E.G. one for <Movable>, <Flammable>, etc...
+    // This current solution isn't too slow for what we're doing now, though.
     public Dictionary<string, GameObject> GridObjectMap = new Dictionary<string, GameObject>();
     public List<GameObject> GridObjectPrefabs = new List<GameObject>();
 
@@ -196,7 +200,7 @@ public class PuzzleGrid : MonoBehaviour
                 levelMenu.SendMessage("SetFailMenu", false);
             }
         }
-        else
+        else // Handle movement input!
         {
             string dir = GetInputDirection();
 
